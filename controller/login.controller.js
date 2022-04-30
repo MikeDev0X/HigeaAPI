@@ -7,17 +7,20 @@ const { NULL } = require('mysql/lib/protocol/constants/types');
 const conexion = mysql.createConnection(mysqlConfig);
 ////////
 
-module.exports.loginPatient = (req,res) =>{
+module.exports.login = (req,res) =>{
     
-    const user = req.body.email;
+    const user = req.body.user;
     const password = req.body.password;
     
-    const sql = `SELECT idPatient FROM usuario WHERE user = ?` 
-    const sql2 = `SELECT password FROM usuario WHERE user = ?`
+    
+    const sql = `SELECT idUser FROM users WHERE mail = ?`; 
+    const sql2 = `SELECT passw0rd FROM users WHERE idUser = ?`;
+    const sql3 = `SELECT idType FROM users WHERE mail = ?`;
 
-    let idPatient;
+    let idUser;
     let resultUser;
     let resultPassword;
+    let idType;
 
     let mensaje = 'Usuario o contraseña inválidos'
 
@@ -34,40 +37,64 @@ module.exports.loginPatient = (req,res) =>{
     function Fun (pw){
 
         conexion.query(sql, [user], (error, results, fields) =>{
-            if(error)
+            if(error){
+                console.log("Error");
                 res.send(error);
+            }
             else{
-                //console.log(results[0]);
-                resultUser = results[0]; //idPatient
+                resultUser = results[0]; //idUser
+                
+                //console.log(resultUser.idPatient);
 
                 if(resultUser != undefined){
 
-                    idPatient = resultUser.idPatient; 
+                    idUser = resultUser.idUser; 
                     
-                    conexion.query(sql2, [user], (error, results2, fields) =>{
+                    conexion.query(sql2, [idUser], (error, results2, fields) =>{
+                        console.log(idUser);
 
                         if(error)
                             res.send(error);
                         else{
+
                             resultPassword = results2[0];
         
                             console.log(resultUser);
+                            console.log(resultPassword);
     
-    
-                            if(resultPassword.password === pw){
+                            if(resultPassword.passw0rd === pw){
 
                                 token = jwt.sign(payload, config.key ,{expiresIn: 7200})
                                 mensaje= 'Usuario o contraseña autenticados'
 
+                                conexion.query(sql3, [user],(error,results,fields)=>{
+
+                                    if (error)
+                                        res.send(error)
+                                    else{
+                                        idType = results[0].idType;
+                                    }
+
+                                    //
+
+                                    res.json({
+                                        mensaje,
+                                        token,
+                                        idType
+                                    })
+
+                                })
+
+
                             }
-                        
+                            else{
+                                res.json({
+                                    mensaje
+                                })
+
+                            }
                         }
-                        
-                            res.json({
-                                mensaje,
-                                token,
-                                idUsuario
-                            })
+
                         })
                     }
                 else{

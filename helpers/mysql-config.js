@@ -5,7 +5,7 @@ const config = {
     user : 'admin', //admin
     
     password : 'GatoControl02', //rootroot
-    database : '', //metaverse
+    database : 'Higea', //metaverse
     debug : false
 
     /* 
