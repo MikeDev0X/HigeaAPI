@@ -19,14 +19,26 @@ module.exports.getDoctor = (req,res) =>{
                     mensaje
                 })
             }
-
-
         }
-        
-        
-            res.json(results);
-
     })
 
 
+}
+
+module.exports.getPatient = (req,res) =>{
+    const sql = `SELECT * FROM patient WHERE idPatient = ?`;
+    let idPatient = req.body.idPatient;
+
+    conexion.query(sql,[idPatient],(error,results,fields)=>{
+        if(error)
+            res.send(error)
+        else{
+            if(results[0]==undefined){
+                mensaje = "Doctor doesn't exist";
+                res.json({
+                    mensaje
+                })
+            }
+        }
+    })
 }
