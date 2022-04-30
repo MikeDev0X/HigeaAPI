@@ -5,18 +5,19 @@ const conexion = mysql.createConnection(mysqlConfig);
 
 module.exports.insertUser = (req,res) =>{
     const sql = `SELECT idUser FROM users WHERE mail = ?`;
-    const sql2 = `INSERT INTO users (idType, firstName,lastNme,age,mail,passw0rd,telephone) VALUES (?,?,?,?,?,?,?)`;   
+    const sql2 = `INSERT INTO users (idType, firstName,lastName,age,mail,passw0rd,telephone) VALUES (?,?,?,?,?,?,?)`;   
 
     const mail = req.body.mail;
     const passw0rd = req.body.passw0rd;
     const idType = req.body.idType;
     const firstName = req.body.firstName;
-    const lastNme = req.body.lastName;
+    const lastName = req.body.lastName;
     const age = req.body.age;
     const telephone = req.body.telephone;
 
     let idUser;
     let mensaje = "";
+    let retId;
 
     conexion.query(sql,(mail),(error,results,fields)=>{
         if (error)
@@ -27,14 +28,15 @@ module.exports.insertUser = (req,res) =>{
 
             if(idUser == undefined){ //IF USER DOESN'T EXIST, IT INSERTS IT, ALSO THE USER
 
-                conexion.query(sql2,[idType,firstName,lastNme,age,mail,passw0rd,telephone],(error,results,fields)=>{
+                conexion.query(sql2,[idType,firstName,lastName,age,mail,passw0rd,telephone],(error,results,fields)=>{
                     if (error)
                         res.send(error)
                     else{
                         mensaje = "User created correctly";
 
                         res.json({
-                            mensaje
+                            mensaje,
+                            idType
                         })
                     }
                 })
