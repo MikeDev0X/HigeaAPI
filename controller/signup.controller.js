@@ -49,6 +49,22 @@ module.exports.insertUser = (req,res) =>{
     })
 }
 
+module.exports.doctorForms = (req,res) =>{
+    const sql = `INSERT INTO doctor (idDoctor,professionalLicense, specialty) VALUES (?,?,?)`;
+    const idDoctor = req.body.idDoctor;
+    const professionalLicense = req.body.professionalLicense;
+    const specialty = req.body.specialty;
+
+    conexion.query(sql,[idDoctor,professionalLicense,specialty],(error,results,fields)=>{
+        if(error)
+            res.send(error);
+        res.json(results);
+    })
+}
+
+
+
+
 module.exports.getAllUsers = (req,res) =>{
     const sql = `SELECT * FROM users`;
 
@@ -57,6 +73,4 @@ module.exports.getAllUsers = (req,res) =>{
             res.send(error);
         res.json(results);
     })
-
-
 }
