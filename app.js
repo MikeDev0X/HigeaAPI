@@ -2,6 +2,7 @@ const express = require('express');
 const config = require('./config/jwt');
 const login = require('./routes/login');
 const signUp = require('./routes/signup');
+const doctor = require('./routes/doctor');
 const multer = require('multer');
 const cors =require('cors');
 
@@ -18,6 +19,7 @@ app.set("key", config.key);
 
 app.use('/',login);
 app.use('/',signUp);
+app.use('/',doctor);
 
 //Función callback -> función que se ejecuta como respuesta a un evento o acción
 app.listen(port, () =>{

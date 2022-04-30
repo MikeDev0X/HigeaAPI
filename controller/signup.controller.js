@@ -5,8 +5,8 @@ const conexion = mysql.createConnection(mysqlConfig);
 
 module.exports.insertUser = (req,res) =>{
     const sql = `SELECT idUser FROM users WHERE mail = ?`;
-    const sql2 = `INSERT INTO users (idType, firstName,lastNme,age,mail,passw0rd,telephone) VALUES (?,?,?,?,?,?,?)`;
-    
+    const sql2 = `INSERT INTO users (idType, firstName,lastNme,age,mail,passw0rd,telephone) VALUES (?,?,?,?,?,?,?)`;   
+
     const mail = req.body.mail;
     const passw0rd = req.body.passw0rd;
     const idType = req.body.idType;
