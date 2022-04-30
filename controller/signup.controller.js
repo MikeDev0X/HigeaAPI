@@ -62,8 +62,20 @@ module.exports.doctorForms = (req,res) =>{
     })
 }
 
+module.exports.patientForms = (req,res) =>{
 
+    const sql = `INSERT INTO patient (idPatient, address, bloodType, illness) VALUES (?,?,?,?)`;
+    const idPatient = req.body.idPatient;
+    const address = req.body.address;
+    const bloodType = req.body.bloodType;
+    const illness = req.body.illness;
 
+    conexion.query(sql,[idPatient, address, bloodType, illness],(error,results,fields)=>{
+        if(error)
+            res.send(error);
+        res.json(results);
+    })
+}
 
 module.exports.getAllUsers = (req,res) =>{
     const sql = `SELECT * FROM users`;
